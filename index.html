@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Proposal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="hearts-container"></div>
+    
+    <div class="container">
+        <h1 class="title">Hi roshu 🤗💖</h1>
+        
+        <div class="gif-container">
+            <img src="images/girl.gif" alt="Girl" class="girl-gif" onerror="handleImageError(this)">
+            <img src="images/boy.gif" alt="Boy" class="boy-gif" onerror="handleImageError(this)">
+        </div>
+
+        <h2 class="proposal">kyaa aap ek choti bacchi ho? 🥺👶</h2>
+        
+        <div class="buttons">
+            <button class="yes-btn" onclick="window.location.href='new.html'">Yes</button>
+            <button class="no-btn" onmouseover="moveButton(this)">No</button>
+        </div>
+    </div>
+
+    <script>
+        function moveButton(button) {
+            // Enhanced smooth movement
+            button.style.position = 'absolute';
+            button.style.transition = 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+            
+            // Improved mobile detection
+            const isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+            
+            const currentX = button.offsetLeft;
+            const currentY = button.offsetTop;
+            
+            let newX, newY;
+            
+            if (isMobile) {
+                // Enhanced mobile movement with dynamic distance based on screen size
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.min(
+                    Math.max(window.innerWidth, window.innerHeight) * 0.3,
+                    Math.random() * 200 + 150
+                );
+                
+                newX = Math.max(10, Math.min(window.innerWidth - 120,
+                    currentX + Math.cos(angle) * distance));
+                newY = Math.max(10, Math.min(window.innerHeight - 120,
+                    currentY + Math.sin(angle) * distance));
+                    
+                // Add fun bounce effect for mobile
+                button.style.transform = `rotate(${Math.random() * 360}deg) scale(${0.8 + Math.random() * 0.4})`;
+            } else {
+                // Enhanced desktop movement
+                newX = Math.max(20, Math.min(window.innerWidth - button.offsetWidth - 20,
+                    currentX + (Math.random() - 0.5) * 500));
+                newY = Math.max(20, Math.min(window.innerHeight - button.offsetHeight - 20,
+                    currentY + (Math.random() - 0.5) * 500));
+                    
+                button.style.transform = `rotate(${Math.random() * 30 - 15}deg) scale(${0.9 + Math.random() * 0.2})`;
+            }
+            
+            // Enhanced ripple effect
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            ripple.style.left = currentX + 'px';
+            ripple.style.top = currentY + 'px';
+            ripple.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 70%)`; // Random color
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 400);
+            
+            button.style.left = newX + 'px';
+            button.style.top = newY + 'px';
+            
+            // Add fun emoji trail
+            const emoji = document.createElement('div');
+            emoji.className = 'emoji-trail';
+            emoji.style.left = currentX + 'px';
+            emoji.style.top = currentY + 'px';
+            emoji.innerText = ['😘', '💝', '🤪', '😅', '🤗', '😍'][Math.floor(Math.random() * 6)];
+            document.body.appendChild(emoji);
+            
+            setTimeout(() => emoji.remove(), 500);
+        }
+
+        // Add touch event handler for better mobile response
+        document.querySelector('.no-btn').addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            moveButton(this);
+        }, { passive: false });
+
+        // Create floating hearts
+        function createHearts() {
+            const heartsContainer = document.querySelector('.hearts-container');
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heartsContainer.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        setInterval(createHearts, 300);
+
+        // Add this function to handle image loading errors
+        function handleImageError(img) {
+            console.error('Image failed to load:', img.src);
+            img.style.backgroundColor = '#ffebee';
+            img.style.padding = '20px';
+            img.style.border = '2px dashed #ff4d4d';
+            img.style.borderRadius = '15px';
+            img.alt = 'Image not found. Please check file path.';
+        }
+    </script>
+</body>
+</html> 
